@@ -13,7 +13,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
     getUpcomingEvents(1),
   ]);
   const dict = getDictionary(locale);
-  const prefix = locale === "hu" ? "/hu" : "";
+  const prefix = locale === "en" ? "/en" : "";
 
   const tagline = localize(settings.tagline, settings.tagline_hu, locale);
   const about = localize(settings.about_text, settings.about_text_hu, locale);

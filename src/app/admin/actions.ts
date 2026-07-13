@@ -15,11 +15,11 @@ function revalidatePublicPages() {
   revalidatePath("/events");
   revalidatePath("/about");
   revalidatePath("/contact");
-  revalidatePath("/hu", "layout");
-  revalidatePath("/hu/gallery");
-  revalidatePath("/hu/events");
-  revalidatePath("/hu/about");
-  revalidatePath("/hu/contact");
+  revalidatePath("/en", "layout");
+  revalidatePath("/en/gallery");
+  revalidatePath("/en/events");
+  revalidatePath("/en/about");
+  revalidatePath("/en/contact");
   revalidatePath("/admin");
 }
 

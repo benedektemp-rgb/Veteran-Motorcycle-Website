@@ -10,7 +10,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 export default function SiteHeader({ locale, settings }: { locale: Locale; settings: SiteSettings }) {
   const [open, setOpen] = useState(false);
   const dict = getDictionary(locale);
-  const prefix = locale === "hu" ? "/hu" : "";
+  const prefix = locale === "en" ? "/en" : "";
 
   const navLinks = [
     { href: `${prefix}/`, label: dict.nav.home },

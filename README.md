@@ -1,8 +1,9 @@
 # Iron & Chrome Motorcycle Museum
 
 A Next.js website for a retro motorcycle museum: Home, Gallery, Events, About, and Contact pages, plus a
-password-protected `/admin` dashboard for editing all of it. Available in English (`/`) and Hungarian
-(`/hu`) via the language switcher in the header. Built to deploy on Vercel from GitHub.
+password-protected `/admin` dashboard for editing all of it. Hungarian is the default language at `/`;
+English lives under `/en` for tourists, reachable via the language switcher in the header. Built to
+deploy on Vercel from GitHub.
 
 The site works out of the box with placeholder content (no setup required to run it locally). To make
 admin edits actually save, and to see your real content in production, connect Supabase and set the
@@ -83,17 +84,18 @@ git push -u origin main
 
 ## Languages
 
-English lives at `/`, `/gallery`, etc.; Hungarian is the same set of pages under `/hu`. The header's
-EN/HU switcher links between the equivalent page in each language. Editable content (museum description,
-gallery item descriptions, event titles/descriptions) has separate English/Hungarian fields in `/admin` --
-if the Hungarian field is left blank, the site falls back to showing the English text instead of a blank.
-Everything else (address, phone, email, motorcycle model names, event dates/locations) is shared across
-both languages.
+Hungarian is the default and lives unprefixed at `/`, `/gallery`, etc.; English is the same set of pages
+under `/en`. The header's HU/EN switcher links between the equivalent page in each language. Editable
+content (museum description, gallery item descriptions, event titles/descriptions) has separate
+English/Hungarian fields in `/admin` -- if the Hungarian field is left blank, the site falls back to
+showing the English text instead of a blank. Everything else (address, phone, email, motorcycle model
+names, event dates/locations) is shared across both languages.
 
 ## Project structure
 
-- `src/app/(en)/` -- English pages (Home, Gallery, Events, About, Contact); `src/app/hu/` -- their
-  Hungarian mirrors. Both are thin wrappers around the shared implementations in `src/app/_pages/`.
+- `src/app/(hu)/` -- Hungarian pages (Home, Gallery, Events, About, Contact), served unprefixed at `/`;
+  `src/app/en/` -- their English mirrors, served under `/en`. Both are thin wrappers around the shared
+  implementations in `src/app/_pages/`.
 - `src/app/admin/` -- the admin dashboard (English-only) and `actions.ts`, the server actions for
   login/logout and all content CRUD.
 - `src/lib/i18n/` -- `dictionaries.ts` (translated UI strings) and `locale.ts` (the `localize()` helper

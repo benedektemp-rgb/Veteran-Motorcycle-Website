@@ -9,8 +9,8 @@ export default function LanguageSwitcher({ locale }: { locale: Locale }) {
   const pathname = usePathname();
 
   const options: { locale: Locale; label: string }[] = [
-    { locale: "en", label: "EN" },
     { locale: "hu", label: "HU" },
+    { locale: "en", label: "EN" },
   ];
 
   return (
