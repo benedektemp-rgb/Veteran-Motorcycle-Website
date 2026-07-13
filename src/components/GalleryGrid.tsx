@@ -4,13 +4,19 @@ import { useMemo, useState } from "react";
 import GalleryCard from "@/components/GalleryCard";
 import type { GalleryItem } from "@/lib/types";
 
-const ALL = "All";
+export default function GalleryGrid({
+  items,
+  allLabel,
+  emptyLabel,
+}: {
+  items: GalleryItem[];
+  allLabel: string;
+  emptyLabel: string;
+}) {
+  const eras = useMemo(() => [allLabel, ...Array.from(new Set(items.map((i) => i.era)))], [items, allLabel]);
+  const [activeEra, setActiveEra] = useState(allLabel);
 
-export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
-  const eras = useMemo(() => [ALL, ...Array.from(new Set(items.map((i) => i.era)))], [items]);
-  const [activeEra, setActiveEra] = useState(ALL);
-
-  const filtered = activeEra === ALL ? items : items.filter((item) => item.era === activeEra);
+  const filtered = activeEra === allLabel ? items : items.filter((item) => item.era === activeEra);
 
   return (
     <div>
@@ -35,9 +41,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
         ))}
       </div>
 
-      {filtered.length === 0 && (
-        <p className="mt-10 text-center text-ink/60">No motorcycles in this era yet.</p>
-      )}
+      {filtered.length === 0 && <p className="mt-10 text-center text-ink/60">{emptyLabel}</p>}
     </div>
   );
 }

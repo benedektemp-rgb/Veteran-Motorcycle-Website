@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localize, type Locale } from "@/lib/i18n/locale";
 import type { SiteSettings } from "@/lib/types";
 
-export default function SiteFooter({ settings }: { settings: SiteSettings }) {
+export default function SiteFooter({ locale, settings }: { locale: Locale; settings: SiteSettings }) {
   const year = new Date().getFullYear();
+  const dict = getDictionary(locale);
+  const tagline = localize(settings.tagline, settings.tagline_hu, locale);
 
   const socialLinks = [
     { url: settings.facebook_url, label: "Facebook" },
@@ -15,11 +19,11 @@ export default function SiteFooter({ settings }: { settings: SiteSettings }) {
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:grid-cols-3">
         <div>
           <p className="font-display text-2xl tracking-wide text-mustard">{settings.museum_name}</p>
-          <p className="mt-2 text-sm text-parchment/80">{settings.tagline}</p>
+          <p className="mt-2 text-sm text-parchment/80">{tagline}</p>
         </div>
 
         <div>
-          <p className="font-display text-lg tracking-wide text-mustard">Visit</p>
+          <p className="font-display text-lg tracking-wide text-mustard">{dict.footer.visit}</p>
           <address className="mt-2 space-y-1 text-sm not-italic text-parchment/80">
             <p>{settings.address}</p>
             <p>{settings.phone}</p>
@@ -28,7 +32,7 @@ export default function SiteFooter({ settings }: { settings: SiteSettings }) {
         </div>
 
         <div>
-          <p className="font-display text-lg tracking-wide text-mustard">Follow</p>
+          <p className="font-display text-lg tracking-wide text-mustard">{dict.footer.follow}</p>
           <ul className="mt-2 space-y-1 text-sm">
             {socialLinks.map((link) => (
               <li key={link.label}>
@@ -49,10 +53,10 @@ export default function SiteFooter({ settings }: { settings: SiteSettings }) {
       <div className="border-t border-parchment/20 px-5 py-4">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-xs text-parchment/60 sm:flex-row">
           <p>
-            &copy; {year} {settings.museum_name}. All rights reserved.
+            &copy; {year} {settings.museum_name}. {dict.footer.rightsReserved}
           </p>
           <Link href="/admin/login" className="text-parchment/50 hover:text-parchment/80">
-            Staff Login
+            {dict.footer.staffLogin}
           </Link>
         </div>
       </div>

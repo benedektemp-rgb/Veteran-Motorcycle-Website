@@ -15,6 +15,11 @@ function revalidatePublicPages() {
   revalidatePath("/events");
   revalidatePath("/about");
   revalidatePath("/contact");
+  revalidatePath("/hu", "layout");
+  revalidatePath("/hu/gallery");
+  revalidatePath("/hu/events");
+  revalidatePath("/hu/about");
+  revalidatePath("/hu/contact");
   revalidatePath("/admin");
 }
 
@@ -95,7 +100,9 @@ export async function updateSiteSettingsAction(
     id: 1,
     museum_name: formData.get("museum_name")?.toString() ?? "",
     tagline: formData.get("tagline")?.toString() ?? "",
+    tagline_hu: formData.get("tagline_hu")?.toString() || null,
     about_text: formData.get("about_text")?.toString() ?? "",
+    about_text_hu: formData.get("about_text_hu")?.toString() || null,
     address: formData.get("address")?.toString() ?? "",
     phone: formData.get("phone")?.toString() ?? "",
     email: formData.get("email")?.toString() ?? "",
@@ -130,6 +137,7 @@ export async function saveGalleryItemAction(
   const payload = {
     title: formData.get("title")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
+    description_hu: formData.get("description_hu")?.toString() || null,
     category: formData.get("category")?.toString() ?? "",
     era: formData.get("era")?.toString() ?? "",
     sort_order: Number(formData.get("sort_order") ?? 0),
@@ -174,7 +182,9 @@ export async function saveEventAction(
 
   const payload = {
     title: formData.get("title")?.toString() ?? "",
+    title_hu: formData.get("title_hu")?.toString() || null,
     description: formData.get("description")?.toString() ?? "",
+    description_hu: formData.get("description_hu")?.toString() || null,
     event_date: formData.get("event_date")?.toString() ?? "",
     location: formData.get("location")?.toString() ?? "",
     image_url: imageUrl,

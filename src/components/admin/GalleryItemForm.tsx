@@ -36,7 +36,13 @@ export default function GalleryItemForm({
         type="number"
         defaultValue={String(item?.sort_order ?? 0)}
       />
-      <TextAreaField label="Description" name="description" defaultValue={item?.description} rows={3} />
+      <TextAreaField label="Description (English)" name="description" defaultValue={item?.description} rows={3} />
+      <TextAreaField
+        label="Description (Hungarian)"
+        name="description_hu"
+        defaultValue={item?.description_hu ?? ""}
+        rows={3}
+      />
       <ImageField label={`Photo ${item ? "(leave blank to keep current)" : ""}`} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}

@@ -1,14 +1,12 @@
 import PageHero from "@/components/PageHero";
 import Button from "@/components/Button";
 import { getSiteSettings } from "@/lib/data";
-import type { Metadata } from "next";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locale";
 
-export const metadata: Metadata = {
-  title: "Contact",
-};
-
-export default async function ContactPage() {
+export default async function ContactPage({ locale }: { locale: Locale }) {
   const settings = await getSiteSettings();
+  const dict = getDictionary(locale);
   const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`;
 
   const socialLinks = [
@@ -19,36 +17,42 @@ export default async function ContactPage() {
 
   return (
     <div>
-      <PageHero eyebrow="Get In Touch" title="Visit Us" />
+      <PageHero eyebrow={dict.contact.eyebrow} title={dict.contact.title} />
 
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2">
         <div>
-          <h2 className="font-display text-3xl text-espresso">Museum Info</h2>
+          <h2 className="font-display text-3xl text-espresso">{dict.contact.museumInfo}</h2>
           <dl className="mt-6 space-y-4 text-lg text-ink/85">
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-widest text-rust">Address</dt>
+              <dt className="text-xs font-semibold uppercase tracking-widest text-rust">
+                {dict.contact.address}
+              </dt>
               <dd>{settings.address}</dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-widest text-rust">Phone</dt>
+              <dt className="text-xs font-semibold uppercase tracking-widest text-rust">
+                {dict.contact.phone}
+              </dt>
               <dd>{settings.phone}</dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-widest text-rust">Email</dt>
+              <dt className="text-xs font-semibold uppercase tracking-widest text-rust">
+                {dict.contact.email}
+              </dt>
               <dd>{settings.email}</dd>
             </div>
           </dl>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button href={`mailto:${settings.email}`}>Email Us</Button>
+            <Button href={`mailto:${settings.email}`}>{dict.contact.emailUs}</Button>
             <Button href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`} variant="secondary">
-              Call Us
+              {dict.contact.callUs}
             </Button>
           </div>
 
           {socialLinks.length > 0 && (
             <div className="mt-10">
-              <h3 className="font-display text-2xl text-espresso">Follow Along</h3>
+              <h3 className="font-display text-2xl text-espresso">{dict.contact.followAlong}</h3>
               <div className="mt-3 flex flex-wrap gap-3">
                 {socialLinks.map((link) => (
                   <a
@@ -67,12 +71,7 @@ export default async function ContactPage() {
         </div>
 
         <div className="aspect-square overflow-hidden border-2 border-espresso shadow-[6px_6px_0_0_var(--color-espresso)] sm:aspect-auto sm:h-full">
-          <iframe
-            title="Museum location map"
-            src={mapSrc}
-            className="h-full min-h-[320px] w-full"
-            loading="lazy"
-          />
+          <iframe title={dict.contact.mapTitle} src={mapSrc} className="h-full min-h-[320px] w-full" loading="lazy" />
         </div>
       </div>
     </div>

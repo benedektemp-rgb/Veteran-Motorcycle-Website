@@ -27,10 +27,17 @@ export default function EventForm({
       {event && <input type="hidden" name="id" value={event.id} />}
       <input type="hidden" name="current_image_url" value={event?.image_url ?? ""} />
 
-      <TextField label="Title" name="title" defaultValue={event?.title} required />
+      <TextField label="Title (English)" name="title" defaultValue={event?.title} required />
+      <TextField label="Title (Hungarian)" name="title_hu" defaultValue={event?.title_hu ?? ""} />
       <TextField label="Date" name="event_date" type="date" defaultValue={event?.event_date} required />
       <TextField label="Location" name="location" defaultValue={event?.location} />
-      <TextAreaField label="Description" name="description" defaultValue={event?.description} rows={3} />
+      <TextAreaField label="Description (English)" name="description" defaultValue={event?.description} rows={3} />
+      <TextAreaField
+        label="Description (Hungarian)"
+        name="description_hu"
+        defaultValue={event?.description_hu ?? ""}
+        rows={3}
+      />
       <ImageField label={`Photo ${event ? "(leave blank to keep current)" : ""}`} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}

@@ -1,7 +1,8 @@
 # Iron & Chrome Motorcycle Museum
 
 A Next.js website for a retro motorcycle museum: Home, Gallery, Events, About, and Contact pages, plus a
-password-protected `/admin` dashboard for editing all of it. Built to deploy on Vercel from GitHub.
+password-protected `/admin` dashboard for editing all of it. Available in English (`/`) and Hungarian
+(`/hu`) via the language switcher in the header. Built to deploy on Vercel from GitHub.
 
 The site works out of the box with placeholder content (no setup required to run it locally). To make
 admin edits actually save, and to see your real content in production, connect Supabase and set the
@@ -22,8 +23,11 @@ motorcycle-museum content from `src/lib/seed-data.ts`.
 1. Create a free project at [supabase.com](https://supabase.com).
 2. Open **SQL Editor -> New query**, paste in the contents of [`supabase/schema.sql`](supabase/schema.sql),
    and run it. This creates the `site_settings`, `gallery_items`, and `events` tables (pre-filled with the
-   same placeholder content), a public `media` storage bucket for photo uploads, and read-only public
-   access policies.
+   same placeholder content, in both English and Hungarian), a public `media` storage bucket for photo
+   uploads, and read-only public access policies.
+   - Already ran `schema.sql` before? Run [`supabase/migrations/002_add_hungarian_fields.sql`](supabase/migrations/002_add_hungarian_fields.sql)
+     instead -- it adds the Hungarian columns to your existing tables and backfills translations onto the
+     placeholder rows without touching anything you've already edited.
 3. In **Project Settings -> API**, copy the **Project URL**, **anon public** key, and **service_role**
    key (keep the service role key secret -- never put it in client-side code).
 
@@ -77,11 +81,25 @@ git push -u origin main
 2. In the project's **Environment Variables** settings, add all six variables from the table above.
 3. Deploy. Every future push to `main` redeploys automatically.
 
+## Languages
+
+English lives at `/`, `/gallery`, etc.; Hungarian is the same set of pages under `/hu`. The header's
+EN/HU switcher links between the equivalent page in each language. Editable content (museum description,
+gallery item descriptions, event titles/descriptions) has separate English/Hungarian fields in `/admin` --
+if the Hungarian field is left blank, the site falls back to showing the English text instead of a blank.
+Everything else (address, phone, email, motorcycle model names, event dates/locations) is shared across
+both languages.
+
 ## Project structure
 
-- `src/app/` -- pages (Home, Gallery, Events, About, Contact, Admin) using the Next.js App Router.
-- `src/app/admin/actions.ts` -- server actions for login/logout and all content CRUD.
+- `src/app/(en)/` -- English pages (Home, Gallery, Events, About, Contact); `src/app/hu/` -- their
+  Hungarian mirrors. Both are thin wrappers around the shared implementations in `src/app/_pages/`.
+- `src/app/admin/` -- the admin dashboard (English-only) and `actions.ts`, the server actions for
+  login/logout and all content CRUD.
+- `src/lib/i18n/` -- `dictionaries.ts` (translated UI strings) and `locale.ts` (the `localize()` helper
+  that picks the English or Hungarian value of a bilingual field, with English as the fallback).
 - `src/lib/data.ts` -- data-fetching layer; falls back to seed data when Supabase isn't configured.
-- `src/lib/seed-data.ts` -- placeholder content shown before Supabase is connected.
-- `src/middleware.ts` -- protects `/admin/*` routes, redirecting to `/admin/login` if not signed in.
-- `supabase/schema.sql` -- database schema, security policies, and seed data for Supabase.
+- `src/lib/seed-data.ts` -- placeholder content (English + Hungarian) shown before Supabase is connected.
+- `src/proxy.ts` -- protects `/admin/*` routes, redirecting to `/admin/login` if not signed in.
+- `supabase/schema.sql` -- database schema, security policies, and seed data for a fresh Supabase project.
+- `supabase/migrations/` -- incremental SQL changes to run against an already-provisioned database.

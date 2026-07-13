@@ -21,14 +21,23 @@ export default function SiteSettingsForm({
       <input type="hidden" name="current_hero_image_url" value={settings.hero_image_url} />
 
       <TextField label="Museum Name" name="museum_name" defaultValue={settings.museum_name} required />
-      <TextField label="Tagline" name="tagline" defaultValue={settings.tagline} />
+      <div className="sm:col-span-2 grid gap-4 sm:grid-cols-2">
+        <TextField label="Tagline (English)" name="tagline" defaultValue={settings.tagline} />
+        <TextField label="Tagline (Hungarian)" name="tagline_hu" defaultValue={settings.tagline_hu ?? ""} />
+      </div>
       <TextField label="Address" name="address" defaultValue={settings.address} />
       <TextField label="Phone" name="phone" defaultValue={settings.phone} />
       <TextField label="Email" name="email" defaultValue={settings.email} />
       <TextField label="Facebook URL" name="facebook_url" defaultValue={settings.facebook_url} />
       <TextField label="Instagram URL" name="instagram_url" defaultValue={settings.instagram_url} />
       <TextField label="YouTube URL" name="youtube_url" defaultValue={settings.youtube_url} />
-      <TextAreaField label="About Text" name="about_text" defaultValue={settings.about_text} rows={5} />
+      <TextAreaField label="About Text (English)" name="about_text" defaultValue={settings.about_text} rows={5} />
+      <TextAreaField
+        label="About Text (Hungarian)"
+        name="about_text_hu"
+        defaultValue={settings.about_text_hu ?? ""}
+        rows={5}
+      />
       <ImageField label="Hero Image (leave blank to keep current)" />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
