@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import { updateSiteSettingsAction, type MutationState } from "@/app/admin/actions";
-import { TextAreaField, TextField, ImageField } from "@/components/admin/FormField";
+import { TextAreaField, TextField } from "@/components/admin/FormField";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 import type { SiteSettings } from "@/lib/types";
 
 const initialState: MutationState = {};
@@ -38,7 +39,7 @@ export default function SiteSettingsForm({
         defaultValue={settings.about_text_hu ?? ""}
         rows={5}
       />
-      <ImageField label="Hero Image (leave blank to keep current)" />
+      <ImageUploadField label="Hero Image" name="image" currentImageUrl={settings.hero_image_url} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
       {state.success && <p className="text-sm font-semibold text-olive sm:col-span-2">Saved.</p>}

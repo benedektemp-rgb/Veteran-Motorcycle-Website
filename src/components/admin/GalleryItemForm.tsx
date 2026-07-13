@@ -2,7 +2,8 @@
 
 import { useActionState, useEffect } from "react";
 import { saveGalleryItemAction, type MutationState } from "@/app/admin/actions";
-import { ImageField, TextAreaField, TextField } from "@/components/admin/FormField";
+import { TextAreaField, TextField } from "@/components/admin/FormField";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 import type { GalleryItem } from "@/lib/types";
 
 const initialState: MutationState = {};
@@ -43,7 +44,7 @@ export default function GalleryItemForm({
         defaultValue={item?.description_hu ?? ""}
         rows={3}
       />
-      <ImageField label={`Photo ${item ? "(leave blank to keep current)" : ""}`} />
+      <ImageUploadField label="Photo" name="image" currentImageUrl={item?.image_url} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
 

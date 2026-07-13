@@ -2,7 +2,8 @@
 
 import { useActionState, useEffect } from "react";
 import { saveEventAction, type MutationState } from "@/app/admin/actions";
-import { ImageField, TextAreaField, TextField } from "@/components/admin/FormField";
+import { TextAreaField, TextField } from "@/components/admin/FormField";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 import type { MuseumEvent } from "@/lib/types";
 
 const initialState: MutationState = {};
@@ -38,7 +39,7 @@ export default function EventForm({
         defaultValue={event?.description_hu ?? ""}
         rows={3}
       />
-      <ImageField label={`Photo ${event ? "(leave blank to keep current)" : ""}`} />
+      <ImageUploadField label="Photo" name="image" currentImageUrl={event?.image_url} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
 

@@ -57,14 +57,3 @@ export function TextAreaField({
     </div>
   );
 }
-
-export function ImageField({ label }: { label: string }) {
-  return (
-    <div className="sm:col-span-2">
-      <label className="text-sm font-semibold text-espresso" htmlFor="image">
-        {label}
-      </label>
-      <input id="image" name="image" type="file" accept="image/*" className="mt-1 w-full text-sm" />
-    </div>
-  );
-}
