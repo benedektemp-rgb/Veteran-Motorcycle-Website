@@ -1,6 +1,9 @@
 "use client";
 
 import { useRef, useState, type ChangeEvent, type DragEvent, type MouseEvent } from "react";
+import { compressImage } from "@/lib/image-compression";
+
+const MAX_UPLOAD_BYTES = 7_000_000;
 
 export default function ImageUploadField({
   label,
@@ -15,27 +18,39 @@ export default function ImageUploadField({
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function applyFile(file: File | null) {
-    if (!file) return;
+  async function applyFile(rawFile: File | null) {
+    if (!rawFile || !inputRef.current) return;
+    setError(null);
+    setIsProcessing(true);
+
+    const file = await compressImage(rawFile);
+
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setIsProcessing(false);
+      setError("That photo is too large even after compression. Please choose a smaller image.");
+      return;
+    }
+
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    inputRef.current.files = dataTransfer.files;
+
     setPreview(URL.createObjectURL(file));
-    setFileName(file.name);
+    setFileName(rawFile.name);
+    setIsProcessing(false);
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    applyFile(event.target.files?.[0] ?? null);
+    void applyFile(event.target.files?.[0] ?? null);
   }
 
   function handleDrop(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDragging(false);
-    const file = event.dataTransfer.files?.[0];
-    if (!file || !inputRef.current) return;
-
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    inputRef.current.files = dataTransfer.files;
-    applyFile(file);
+    void applyFile(event.dataTransfer.files?.[0] ?? null);
   }
 
   function handleClear(event: MouseEvent) {
@@ -44,6 +59,7 @@ export default function ImageUploadField({
     if (inputRef.current) inputRef.current.value = "";
     setPreview(currentImageUrl || null);
     setFileName(null);
+    setError(null);
   }
 
   return (
@@ -76,10 +92,16 @@ export default function ImageUploadField({
         </div>
         <div className="flex-1 text-sm text-ink/70">
           <p className="font-semibold text-espresso">
-            {fileName ?? "Drag & drop an image here, or click to browse"}
+            {isProcessing
+              ? "Processing photo..."
+              : (fileName ?? "Drag & drop an image here, or click to browse")}
           </p>
-          <p className="mt-1 text-xs">JPG, PNG, or WebP. Leave empty to keep the current photo.</p>
-          {fileName && (
+          <p className="mt-1 text-xs">
+            JPG, PNG, or WebP -- large photos are automatically resized. Leave empty to keep the current
+            photo.
+          </p>
+          {error && <p className="mt-1 text-xs font-semibold text-rust-dark">{error}</p>}
+          {fileName && !isProcessing && (
             <button
               type="button"
               onClick={handleClear}
