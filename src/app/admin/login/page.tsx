@@ -11,13 +11,13 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-5 py-16">
       <div className="w-full max-w-sm border-2 border-espresso bg-cream p-8 shadow-[6px_6px_0_0_var(--color-espresso)]">
-        <p className="text-xs font-semibold uppercase tracking-widest text-rust">Staff Only</p>
-        <h1 className="font-display mt-1 text-3xl text-espresso">Admin Login</h1>
+        <p className="text-xs font-semibold uppercase tracking-widest text-rust">Csak személyzetnek</p>
+        <h1 className="font-display mt-1 text-3xl text-espresso">Admin bejelentkezés</h1>
 
         <form action={formAction} className="mt-6 space-y-4">
           <div>
             <label htmlFor="username" className="text-sm font-semibold text-espresso">
-              Username
+              Felhasználónév
             </label>
             <input
               id="username"
@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
 
           <div>
             <label htmlFor="password" className="text-sm font-semibold text-espresso">
-              Password
+              Jelszó
             </label>
             <input
               id="password"
@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
             disabled={pending}
             className="font-display w-full rounded-sm border-2 border-rust-dark bg-rust px-6 py-2.5 text-lg tracking-wide text-cream transition-colors hover:bg-rust-dark disabled:opacity-60"
           >
-            {pending ? "Signing in..." : "Sign In"}
+            {pending ? "Bejelentkezés..." : "Bejelentkezés"}
           </button>
         </form>
       </div>

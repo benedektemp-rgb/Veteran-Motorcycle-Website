@@ -33,13 +33,13 @@ export default function GalleryManager({ items, disabled }: { items: GalleryItem
                 onClick={() => setEditingId(item.id)}
                 className="text-sm font-semibold text-espresso underline"
               >
-                Edit
+                Szerkesztés
               </button>
               <DeleteButton
                 id={item.id}
                 action={deleteGalleryItemAction}
                 disabled={disabled}
-                label="motorcycle"
+                label="ezt a motorkerékpárt"
               />
             </div>
           )}
@@ -57,7 +57,7 @@ export default function GalleryManager({ items, disabled }: { items: GalleryItem
           disabled={disabled}
           className="font-display border-2 border-espresso px-4 py-2 text-espresso transition-colors hover:bg-espresso hover:text-cream disabled:cursor-not-allowed disabled:opacity-50"
         >
-          + Add Motorcycle
+          + Motorkerékpár hozzáadása
         </button>
       )}
     </div>

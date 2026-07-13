@@ -38,16 +38,18 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
   const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
 
   if (!adminUsername || !adminPasswordHash) {
-    return { error: "Admin login isn't configured on the server yet (missing ADMIN_USERNAME / ADMIN_PASSWORD_HASH)." };
+    return {
+      error: "Az admin bejelentkezés még nincs beállítva a szerveren (hiányzik az ADMIN_USERNAME / ADMIN_PASSWORD_HASH).",
+    };
   }
 
   if (username !== adminUsername) {
-    return { error: "Invalid username or password." };
+    return { error: "Hibás felhasználónév vagy jelszó." };
   }
 
   const valid = await bcrypt.compare(password, adminPasswordHash);
   if (!valid) {
-    return { error: "Invalid username or password." };
+    return { error: "Hibás felhasználónév vagy jelszó." };
   }
 
   const token = await createSessionToken(username);
@@ -90,7 +92,7 @@ export async function updateSiteSettingsAction(
   await requireSession();
   const admin = getSupabaseAdmin();
   if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "Supabase isn't connected yet, so this change can't be saved. See README for setup steps." };
+    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
   }
 
   const currentHero = formData.get("current_hero_image_url")?.toString() ?? "";
@@ -127,7 +129,7 @@ export async function saveGalleryItemAction(
   await requireSession();
   const admin = getSupabaseAdmin();
   if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "Supabase isn't connected yet, so this change can't be saved. See README for setup steps." };
+    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
   }
 
   const id = formData.get("id")?.toString();
@@ -173,7 +175,7 @@ export async function saveEventAction(
   await requireSession();
   const admin = getSupabaseAdmin();
   if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "Supabase isn't connected yet, so this change can't be saved. See README for setup steps." };
+    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
   }
 
   const id = formData.get("id")?.toString();

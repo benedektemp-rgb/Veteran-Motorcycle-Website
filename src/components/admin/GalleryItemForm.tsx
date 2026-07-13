@@ -28,23 +28,23 @@ export default function GalleryItemForm({
       {item && <input type="hidden" name="id" value={item.id} />}
       <input type="hidden" name="current_image_url" value={item?.image_url ?? ""} />
 
-      <TextField label="Title" name="title" defaultValue={item?.title} required />
-      <TextField label="Category" name="category" defaultValue={item?.category} placeholder="e.g. Japanese" />
-      <TextField label="Era" name="era" defaultValue={item?.era} placeholder="e.g. 1970s" />
+      <TextField label="Cím" name="title" defaultValue={item?.title} required />
+      <TextField label="Kategória" name="category" defaultValue={item?.category} placeholder="pl. japán" />
+      <TextField label="Korszak" name="era" defaultValue={item?.era} placeholder="pl. 1970s" />
       <TextField
-        label="Sort Order"
+        label="Sorrend"
         name="sort_order"
         type="number"
         defaultValue={String(item?.sort_order ?? 0)}
       />
-      <TextAreaField label="Description (English)" name="description" defaultValue={item?.description} rows={3} />
+      <TextAreaField label="Leírás (angol)" name="description" defaultValue={item?.description} rows={3} />
       <TextAreaField
-        label="Description (Hungarian)"
+        label="Leírás (magyar)"
         name="description_hu"
         defaultValue={item?.description_hu ?? ""}
         rows={3}
       />
-      <ImageUploadField label="Photo" name="image" currentImageUrl={item?.image_url} />
+      <ImageUploadField label="Fénykép" name="image" currentImageUrl={item?.image_url} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
 
@@ -54,14 +54,14 @@ export default function GalleryItemForm({
           disabled={disabled || pending}
           className="font-display border-2 border-rust-dark bg-rust px-4 py-2 text-cream transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {pending ? "Saving..." : "Save"}
+          {pending ? "Mentés..." : "Mentés"}
         </button>
         <button
           type="button"
           onClick={onDone}
           className="font-display border-2 border-espresso px-4 py-2 text-espresso transition-colors hover:bg-espresso hover:text-cream"
         >
-          Cancel
+          Mégse
         </button>
       </div>
     </form>

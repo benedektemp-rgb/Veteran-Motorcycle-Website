@@ -33,9 +33,14 @@ export default function EventsManager({ events, disabled }: { events: MuseumEven
                 onClick={() => setEditingId(event.id)}
                 className="text-sm font-semibold text-espresso underline"
               >
-                Edit
+                Szerkesztés
               </button>
-              <DeleteButton id={event.id} action={deleteEventAction} disabled={disabled} label="event" />
+              <DeleteButton
+                id={event.id}
+                action={deleteEventAction}
+                disabled={disabled}
+                label="ezt az eseményt"
+              />
             </div>
           )}
         </div>
@@ -52,7 +57,7 @@ export default function EventsManager({ events, disabled }: { events: MuseumEven
           disabled={disabled}
           className="font-display border-2 border-espresso px-4 py-2 text-espresso transition-colors hover:bg-espresso hover:text-cream disabled:cursor-not-allowed disabled:opacity-50"
         >
-          + Add Event
+          + Esemény hozzáadása
         </button>
       )}
     </div>

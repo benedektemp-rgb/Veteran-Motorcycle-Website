@@ -15,7 +15,7 @@ export default function DeleteButton({
     <form
       action={action}
       onSubmit={(event) => {
-        if (!confirm(`Delete this ${label}? This can't be undone.`)) {
+        if (!confirm(`Biztosan törli ${label}? Ez nem vonható vissza.`)) {
           event.preventDefault();
         }
       }}
@@ -26,7 +26,7 @@ export default function DeleteButton({
         disabled={disabled}
         className="text-sm font-semibold text-rust-dark underline disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Delete
+        Törlés
       </button>
     </form>
   );

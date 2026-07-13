@@ -28,18 +28,18 @@ export default function EventForm({
       {event && <input type="hidden" name="id" value={event.id} />}
       <input type="hidden" name="current_image_url" value={event?.image_url ?? ""} />
 
-      <TextField label="Title (English)" name="title" defaultValue={event?.title} required />
-      <TextField label="Title (Hungarian)" name="title_hu" defaultValue={event?.title_hu ?? ""} />
-      <TextField label="Date" name="event_date" type="date" defaultValue={event?.event_date} required />
-      <TextField label="Location" name="location" defaultValue={event?.location} />
-      <TextAreaField label="Description (English)" name="description" defaultValue={event?.description} rows={3} />
+      <TextField label="Cím (angol)" name="title" defaultValue={event?.title} required />
+      <TextField label="Cím (magyar)" name="title_hu" defaultValue={event?.title_hu ?? ""} />
+      <TextField label="Dátum" name="event_date" type="date" defaultValue={event?.event_date} required />
+      <TextField label="Helyszín" name="location" defaultValue={event?.location} />
+      <TextAreaField label="Leírás (angol)" name="description" defaultValue={event?.description} rows={3} />
       <TextAreaField
-        label="Description (Hungarian)"
+        label="Leírás (magyar)"
         name="description_hu"
         defaultValue={event?.description_hu ?? ""}
         rows={3}
       />
-      <ImageUploadField label="Photo" name="image" currentImageUrl={event?.image_url} />
+      <ImageUploadField label="Fénykép" name="image" currentImageUrl={event?.image_url} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
 
@@ -49,14 +49,14 @@ export default function EventForm({
           disabled={disabled || pending}
           className="font-display border-2 border-rust-dark bg-rust px-4 py-2 text-cream transition-colors hover:bg-rust-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {pending ? "Saving..." : "Save"}
+          {pending ? "Mentés..." : "Mentés"}
         </button>
         <button
           type="button"
           onClick={onDone}
           className="font-display border-2 border-espresso px-4 py-2 text-espresso transition-colors hover:bg-espresso hover:text-cream"
         >
-          Cancel
+          Mégse
         </button>
       </div>
     </form>

@@ -30,7 +30,7 @@ export default function ImageUploadField({
 
     if (file.size > MAX_UPLOAD_BYTES) {
       setIsProcessing(false);
-      setError("That photo is too large even after compression. Please choose a smaller image.");
+      setError("Ez a fénykép tömörítés után is túl nagy. Válasszon kisebb képet.");
       return;
     }
 
@@ -87,18 +87,18 @@ export default function ImageUploadField({
             // eslint-disable-next-line @next/next/no-img-element -- local blob preview, not a servable remote image
             <img src={preview} alt="" className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-xs text-ink/40">No image</div>
+            <div className="flex h-full w-full items-center justify-center text-xs text-ink/40">Nincs kép</div>
           )}
         </div>
         <div className="flex-1 text-sm text-ink/70">
           <p className="font-semibold text-espresso">
             {isProcessing
-              ? "Processing photo..."
-              : (fileName ?? "Drag & drop an image here, or click to browse")}
+              ? "Kép feldolgozása..."
+              : (fileName ?? "Húzza ide a képet, vagy kattintson a tallózáshoz")}
           </p>
           <p className="mt-1 text-xs">
-            JPG, PNG, or WebP -- large photos are automatically resized. Leave empty to keep the current
-            photo.
+            JPG, PNG vagy WebP -- a nagy fényképeket automatikusan átméretezzük. Hagyja üresen a jelenlegi
+            fénykép megtartásához.
           </p>
           {error && <p className="mt-1 text-xs font-semibold text-rust-dark">{error}</p>}
           {fileName && !isProcessing && (
@@ -107,7 +107,7 @@ export default function ImageUploadField({
               onClick={handleClear}
               className="mt-2 text-xs font-semibold text-rust-dark underline"
             >
-              Remove selected photo
+              Kiválasztott fénykép eltávolítása
             </button>
           )}
         </div>

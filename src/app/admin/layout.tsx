@@ -6,7 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Admin",
+  title: "Admin felület",
   robots: { index: false, follow: false },
 };
 
@@ -18,11 +18,11 @@ export default async function AdminLayout({
   const settings = await getSiteSettings();
 
   return (
-    <html lang="en" className={`${bebasNeue.variable} ${vollkorn.variable} h-full antialiased`}>
+    <html lang="hu" className={`${bebasNeue.variable} ${vollkorn.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-parchment">
-        <SiteHeader locale="en" settings={settings} />
+        <SiteHeader locale="hu" settings={settings} showLanguageSwitcher={false} />
         <main className="flex-1">{children}</main>
-        <SiteFooter locale="en" settings={settings} />
+        <SiteFooter locale="hu" settings={settings} />
       </body>
     </html>
   );

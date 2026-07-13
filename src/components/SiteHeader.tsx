@@ -7,7 +7,15 @@ import type { Locale } from "@/lib/i18n/locale";
 import type { SiteSettings } from "@/lib/types";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
-export default function SiteHeader({ locale, settings }: { locale: Locale; settings: SiteSettings }) {
+export default function SiteHeader({
+  locale,
+  settings,
+  showLanguageSwitcher = true,
+}: {
+  locale: Locale;
+  settings: SiteSettings;
+  showLanguageSwitcher?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const dict = getDictionary(locale);
   const prefix = locale === "en" ? "/en" : "";
@@ -39,11 +47,11 @@ export default function SiteHeader({ locale, settings }: { locale: Locale; setti
               </Link>
             ))}
           </nav>
-          <LanguageSwitcher locale={locale} />
+          {showLanguageSwitcher && <LanguageSwitcher locale={locale} />}
         </div>
 
         <div className="flex items-center gap-4 md:hidden">
-          <LanguageSwitcher locale={locale} />
+          {showLanguageSwitcher && <LanguageSwitcher locale={locale} />}
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
