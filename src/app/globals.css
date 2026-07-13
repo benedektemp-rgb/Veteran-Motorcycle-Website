@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 :root {
   --color-parchment: #f2e6cd;
@@ -14,16 +15,6 @@
 }
 
 @theme inline {
-  --color-parchment: var(--color-parchment);
-  --color-parchment-dark: var(--color-parchment-dark);
-  --color-ink: var(--color-ink);
-  --color-espresso: var(--color-espresso);
-  --color-espresso-dark: var(--color-espresso-dark);
-  --color-rust: var(--color-rust);
-  --color-rust-dark: var(--color-rust-dark);
-  --color-mustard: var(--color-mustard);
-  --color-olive: var(--color-olive);
-  --color-cream: var(--color-cream);
   --font-display: var(--font-bebas-neue);
   --font-body: var(--font-vollkorn);
 }
