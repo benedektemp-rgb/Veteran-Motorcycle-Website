@@ -19,8 +19,8 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
     .from("gallery_items")
     .select("*")
     .order("sort_order", { ascending: true });
-  if (error || !data || data.length === 0) return galleryItemsSeed;
-  return data as unknown as GalleryItem[];
+  if (error) return galleryItemsSeed;
+  return (data ?? []) as unknown as GalleryItem[];
 }
 
 export async function getEvents(): Promise<MuseumEvent[]> {
@@ -31,8 +31,8 @@ export async function getEvents(): Promise<MuseumEvent[]> {
     .from("events")
     .select("*")
     .order("event_date", { ascending: true });
-  if (error || !data || data.length === 0) return eventsSeed;
-  return data as unknown as MuseumEvent[];
+  if (error) return eventsSeed;
+  return (data ?? []) as unknown as MuseumEvent[];
 }
 
 export async function getUpcomingEvents(limit?: number): Promise<MuseumEvent[]> {
