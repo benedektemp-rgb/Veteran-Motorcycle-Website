@@ -6,6 +6,8 @@ import EventsManager from "@/components/admin/EventsManager";
 import LogoutButton from "@/components/admin/LogoutButton";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Admin irányítópult",
   robots: { index: false, follow: false },
