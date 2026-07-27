@@ -42,7 +42,9 @@ export default function SiteSettingsForm({
       <ImageUploadField label="Fejléc kép" name="image" currentImageUrl={settings.hero_image_url} />
 
       {state.error && <p className="text-sm font-semibold text-rust-dark sm:col-span-2">{state.error}</p>}
-      {state.success && <p className="text-sm font-semibold text-olive sm:col-span-2">Mentve.</p>}
+      {state.success && (
+        <p className="text-sm font-semibold text-olive sm:col-span-2">{state.message ?? "Mentve."}</p>
+      )}
 
       <div className="sm:col-span-2">
         <button

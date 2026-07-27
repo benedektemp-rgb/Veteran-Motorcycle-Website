@@ -1,0 +1,101 @@
+[
+  {
+    "id": "432ece5b-7a22-4458-8673-007489579748",
+    "title": "1936 Brough Superior SS100",
+    "description": "The 'Rolls-Royce of Motorcycles.' Hand-built in Nottingham and guaranteed by the factory to hit 100mph — a staggering claim for its era.",
+    "description_hu": "A 'motorkerékpárok Rolls-Royce-a.' Kézzel épült Nottinghamben, és a gyár garantálta, hogy eléri a 160 km/h-s sebességet — a korához képest elképesztő állítás.",
+    "image_url": "https://picsum.photos/seed/brough-ss100/900/700",
+    "category": "British",
+    "era": "1930s",
+    "sort_order": 1,
+    "created_at": "2024-01-10T00:00:00.000Z"
+  },
+  {
+    "id": "d11b4f4b-2a4c-44bb-8d39-36a3b7a740f6",
+    "title": "1948 Vincent Black Shadow",
+    "description": "The fastest production motorcycle of its day, with a 998cc V-twin and a black-crackle engine finish that gave it its name.",
+    "description_hu": "Kora leggyorsabb sorozatgyártású motorkerékpárja, 998 köbcentis V-twin motorral és fekete, repedt mintázatú motorházzal, amiről a nevét kapta.",
+    "image_url": "https://picsum.photos/seed/vincent-black-shadow/900/700",
+    "category": "British",
+    "era": "1940s",
+    "sort_order": 2,
+    "created_at": "2024-01-12T00:00:00.000Z"
+  },
+  {
+    "id": "04652814-11a2-44fe-b5c8-d7ab313a50f4",
+    "title": "1952 Harley-Davidson K Model",
+    "description": "Harley's answer to nimble British twins, and the direct ancestor of the Sportster line that followed it.",
+    "description_hu": "A Harley válasza a fürge brit ikermotoros gépekre, és a később megjelenő Sportster család közvetlen elődje.",
+    "image_url": "https://picsum.photos/seed/harley-k-model/900/700",
+    "category": "American",
+    "era": "1950s",
+    "sort_order": 3,
+    "created_at": "2024-01-14T00:00:00.000Z"
+  },
+  {
+    "id": "359727e4-268f-428f-afa6-7d390031640c",
+    "title": "1965 Ducati 250 Mach 1",
+    "description": "A road-legal cafe racer straight from the factory, and one of the fastest 250cc production bikes ever built.",
+    "description_hu": "Gyárilag közúti forgalomra kész cafe racer, és minden idők egyik leggyorsabb 250 köbcentis sorozatgyártású motorja.",
+    "image_url": "https://picsum.photos/seed/ducati-mach1/900/700",
+    "category": "Italian",
+    "era": "1960s",
+    "sort_order": 4,
+    "created_at": "2024-01-16T00:00:00.000Z"
+  },
+  {
+    "id": "300b2a5b-2e97-48a2-b5c5-41a56749c925",
+    "title": "1969 Honda CB750",
+    "description": "The original 'superbike.' Four cylinders, a front disc brake, and electric start — it rewrote the rulebook overnight.",
+    "description_hu": "Az eredeti 'szupersport.' Négyhengeres motor, első tárcsafék és elektromos indítás — egyetlen éjszaka alatt írta újra a szabálykönyvet.",
+    "image_url": "https://picsum.photos/seed/honda-cb750/900/700",
+    "category": "Japanese",
+    "era": "1960s",
+    "sort_order": 5,
+    "created_at": "2024-01-18T00:00:00.000Z"
+  },
+  {
+    "id": "46b6937b-7fb2-45c4-bd6e-cada946bf9b1",
+    "title": "1972 Triumph Trident T150",
+    "description": "Britain's last great stand against the Japanese invasion — a howling three-cylinder built for the open road.",
+    "description_hu": "Nagy-Britannia utolsó nagy kiállása a japán motorok inváziója ellen — egy üvöltő háromhengeres gép a nyílt útra tervezve.",
+    "image_url": "https://picsum.photos/seed/triumph-trident/900/700",
+    "category": "British",
+    "era": "1970s",
+    "sort_order": 6,
+    "created_at": "2024-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "ee39a890-125b-45bb-9b15-a4e43896b8ff",
+    "title": "1975 Kawasaki Z1 900",
+    "description": "A double-overhead-cam inline-four that made everything else on the showroom floor look obsolete.",
+    "description_hu": "Kettős vezérműtengelyes soros négyhengeres motor, amitől minden más gép elavultnak tűnt a szalonban.",
+    "image_url": "https://picsum.photos/seed/kawasaki-z1/900/700",
+    "category": "Japanese",
+    "era": "1970s",
+    "sort_order": 7,
+    "created_at": "2024-01-22T00:00:00.000Z"
+  },
+  {
+    "id": "f8cc2f46-f1ce-4475-acc5-4e94c0a6960b",
+    "title": "1983 Yamaha RZ350",
+    "description": "A screaming two-stroke street bike built for riders who wanted race-track thrills with a license plate.",
+    "description_hu": "Sikoltó kétütemű utcai motor azoknak, akik versenypálya-élményt akartak rendszámtáblával.",
+    "image_url": "https://picsum.photos/seed/yamaha-rz350/900/700",
+    "category": "Japanese",
+    "era": "1980s",
+    "sort_order": 8,
+    "created_at": "2024-01-24T00:00:00.000Z"
+  },
+  {
+    "id": "d0e799a5-ace2-477c-9b5f-003d8630ac41",
+    "title": "1988 Ducati 851",
+    "description": "The bike that dragged Ducati into the modern era, with fuel injection and four valves per cylinder in a racing-red frame.",
+    "description_hu": "A motor, amely a modern korba rántotta a Ducatit, befecskendezős motorral és hengerenként négy szeleppel, verseny-piros vázban.",
+    "image_url": "https://picsum.photos/seed/ducati-851/900/700",
+    "category": "Italian",
+    "era": "1980s",
+    "sort_order": 9,
+    "created_at": "2024-01-26T00:00:00.000Z"
+  }
+]

@@ -5,9 +5,11 @@ password-protected `/admin` dashboard for editing all of it. Hungarian is the de
 English lives under `/en` for tourists, reachable via the language switcher in the header. Built to
 deploy on Vercel from GitHub.
 
-The site works out of the box with placeholder content (no setup required to run it locally). To make
-admin edits actually save, and to see your real content in production, connect Supabase and set the
-admin credentials as described below.
+Content (museum info, gallery, events) lives as JSON files in this repo under `content/`, and uploaded
+photos live in `public/uploads/` -- there is no external database. Saving a change in `/admin` commits
+the update directly to this GitHub repo, which triggers Vercel's normal auto-deploy. That means every
+edit has full history in `git log`, and nothing can silently disappear the way a paused/reset database
+can. The trade-off: a save takes a minute or two to actually go live (it's a real deploy), not instant.
 
 ## Run it locally
 
@@ -16,23 +18,11 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Without any environment variables set, every page renders with placeholder
-motorcycle-museum content from `src/lib/seed-data.ts`.
+Open http://localhost:3000. Content comes straight from the `content/*.json` files, so the site works
+immediately with no setup. Locally, admin edits write straight to disk (no `GITHUB_TOKEN` needed) --
+saving in `/admin` updates the JSON files and image files directly, and you'll see the change on refresh.
 
-## 1. Connect Supabase (so admin edits persist)
-
-1. Create a free project at [supabase.com](https://supabase.com).
-2. Open **SQL Editor -> New query**, paste in the contents of [`supabase/schema.sql`](supabase/schema.sql),
-   and run it. This creates the `site_settings`, `gallery_items`, and `events` tables (pre-filled with the
-   same placeholder content, in both English and Hungarian), a public `media` storage bucket for photo
-   uploads, and read-only public access policies.
-   - Already ran `schema.sql` before? Run [`supabase/migrations/002_add_hungarian_fields.sql`](supabase/migrations/002_add_hungarian_fields.sql)
-     instead -- it adds the Hungarian columns to your existing tables and backfills translations onto the
-     placeholder rows without touching anything you've already edited.
-3. In **Project Settings -> API**, copy the **Project URL**, **anon public** key, and **service_role**
-   key (keep the service role key secret -- never put it in client-side code).
-
-## 2. Set up admin login
+## 1. Set up admin login
 
 Generate a password hash for your chosen admin password:
 
@@ -48,6 +38,15 @@ That prints two versions of the hash:
   be escaped with a backslash or the value gets silently mangled. This only applies to `.env` files;
   Vercel's dashboard does not need escaping.
 
+## 2. Get a GitHub token (production only -- skip for local dev)
+
+This is what lets `/admin` commit content changes back to this repo once deployed:
+
+1. Go to [github.com/settings/personal-access-tokens](https://github.com/settings/personal-access-tokens) -> **Generate new token** (fine-grained).
+2. Set **Repository access** to "Only select repositories" -> this repo (`Veteran-Motorcycle-Website`).
+3. Under **Permissions -> Repository permissions**, set **Contents** to **Read and write**. Leave everything else as-is.
+4. Generate the token and copy it (starts with `github_pat_`) -- you won't be able to see it again.
+
 ## 3. Environment variables
 
 Copy `.env.local.example` to `.env.local` and fill in the values from steps 1 and 2:
@@ -58,9 +57,7 @@ cp .env.local.example .env.local
 
 | Variable | Where it's used |
 | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | Public Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public anon key (read-only access) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key used by admin actions to write data |
+| `GITHUB_TOKEN` | Fine-grained PAT that lets admin saves commit to this repo (production only; leave unset locally) |
 | `ADMIN_USERNAME` | Username for `/admin/login` |
 | `ADMIN_PASSWORD_HASH` | Bcrypt hash from `scripts/hash-password.mjs` |
 | `SESSION_SECRET` | Random string used to sign the admin session cookie |
@@ -79,8 +76,10 @@ git push -u origin main
 ## 5. Deploy on Vercel
 
 1. Go to [vercel.com/new](https://vercel.com/new) and import the GitHub repository.
-2. In the project's **Environment Variables** settings, add all six variables from the table above.
-3. Deploy. Every future push to `main` redeploys automatically.
+2. In the project's **Environment Variables** settings, add `GITHUB_TOKEN`, `ADMIN_USERNAME`,
+   `ADMIN_PASSWORD_HASH`, and `SESSION_SECRET`.
+3. Deploy. Every future push to `main` -- including ones made automatically by saving in `/admin` --
+   redeploys automatically.
 
 ## Languages
 
@@ -108,8 +107,10 @@ printing and posting next to the physical motorcycle in the museum. Generated en
   server actions for login/logout and all content CRUD.
 - `src/lib/i18n/` -- `dictionaries.ts` (translated UI strings) and `locale.ts` (the `localize()` helper
   that picks the English or Hungarian value of a bilingual field, with English as the fallback).
-- `src/lib/data.ts` -- data-fetching layer; falls back to seed data when Supabase isn't configured.
-- `src/lib/seed-data.ts` -- placeholder content (English + Hungarian) shown before Supabase is connected.
+- `src/lib/data.ts` -- reads content from `content/*.json` (bundled at build time).
+- `src/lib/content-writer.ts` -- writes content: straight to disk locally, or via `src/lib/github-content.ts`
+  (GitHub's Contents API) on Vercel.
+- `content/` -- the actual site content: `site-settings.json`, `gallery.json`, `events.json`. Edit these
+  directly (and commit) if you ever want to change content without going through `/admin`.
+- `public/uploads/` -- photos uploaded via `/admin`.
 - `src/proxy.ts` -- protects `/admin/*` routes, redirecting to `/admin/login` if not signed in.
-- `supabase/schema.sql` -- database schema, security policies, and seed data for a fresh Supabase project.
-- `supabase/migrations/` -- incremental SQL changes to run against an already-provisioned database.

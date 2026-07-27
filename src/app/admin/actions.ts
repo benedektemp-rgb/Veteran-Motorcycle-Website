@@ -5,7 +5,17 @@ import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { clearSessionCookie, createSessionToken, getSession, setSessionCookie } from "@/lib/auth";
-import { getSupabaseAdmin, isSupabaseAdminConfigured } from "@/lib/supabase-admin";
+import { getGalleryItems, getEvents } from "@/lib/data";
+import {
+  EVENTS_PATH,
+  GALLERY_PATH,
+  SITE_SETTINGS_PATH,
+  deleteUploadedImage,
+  isContentStoreWritable,
+  saveUploadedImage,
+  writeContentFile,
+} from "@/lib/content-writer";
+import type { GalleryItem, MuseumEvent } from "@/lib/types";
 
 export type LoginState = { error?: string };
 
@@ -62,44 +72,32 @@ export async function logoutAction() {
   redirect("/admin/login");
 }
 
+const NOT_WRITABLE_ERROR =
+  "A tartalom mentése jelenleg nincs beállítva (hiányzik a GITHUB_TOKEN). Lásd a README fájlt a beállításhoz.";
+
+const SAVED_MESSAGE = "Mentve. A módosítás néhány percen belül jelenik meg az élő oldalon.";
+
 async function uploadImageIfProvided(formData: FormData, fallbackUrl: string): Promise<string> {
   const file = formData.get("image") as File | null;
   if (!file || file.size === 0) return fallbackUrl;
-
-  const admin = getSupabaseAdmin();
-  if (!admin) return fallbackUrl;
-
-  const extension = file.name.split(".").pop() || "jpg";
-  const path = `${randomUUID()}.${extension}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  const { error } = await admin.storage.from("media").upload(path, buffer, {
-    contentType: file.type || "image/jpeg",
-    upsert: false,
-  });
-  if (error) return fallbackUrl;
-
-  const { data } = admin.storage.from("media").getPublicUrl(path);
-  return data.publicUrl;
+  return saveUploadedImage(file);
 }
 
-export type MutationState = { error?: string; success?: boolean };
+export type MutationState = { error?: string; success?: boolean; message?: string };
 
 export async function updateSiteSettingsAction(
   _prevState: MutationState,
   formData: FormData
 ): Promise<MutationState> {
   await requireSession();
-  const admin = getSupabaseAdmin();
-  if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
+  if (!isContentStoreWritable()) {
+    return { error: NOT_WRITABLE_ERROR };
   }
 
   const currentHero = formData.get("current_hero_image_url")?.toString() ?? "";
   const heroImageUrl = await uploadImageIfProvided(formData, currentHero);
 
-  const payload = {
-    id: 1,
+  const settings = {
     museum_name: formData.get("museum_name")?.toString() ?? "",
     tagline: formData.get("tagline")?.toString() ?? "",
     tagline_hu: formData.get("tagline_hu")?.toString() || null,
@@ -112,14 +110,17 @@ export async function updateSiteSettingsAction(
     instagram_url: formData.get("instagram_url")?.toString() ?? "",
     youtube_url: formData.get("youtube_url")?.toString() ?? "",
     hero_image_url: heroImageUrl,
-    updated_at: new Date().toISOString(),
   };
 
-  const { error } = await admin.from("site_settings").upsert(payload);
-  if (error) return { error: error.message };
+  try {
+    await writeContentFile(SITE_SETTINGS_PATH, settings);
+  } catch (error) {
+    console.error("updateSiteSettingsAction: write failed", error);
+    return { error: "Nem sikerült menteni a beállításokat." };
+  }
 
   revalidatePublicPages();
-  return { success: true };
+  return { success: true, message: SAVED_MESSAGE };
 }
 
 export async function saveGalleryItemAction(
@@ -127,16 +128,17 @@ export async function saveGalleryItemAction(
   formData: FormData
 ): Promise<MutationState> {
   await requireSession();
-  const admin = getSupabaseAdmin();
-  if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
+  if (!isContentStoreWritable()) {
+    return { error: NOT_WRITABLE_ERROR };
   }
 
   const id = formData.get("id")?.toString();
   const currentImageUrl = formData.get("current_image_url")?.toString() ?? "";
   const imageUrl = await uploadImageIfProvided(formData, currentImageUrl);
 
-  const payload = {
+  const items = await getGalleryItems();
+
+  const fields = {
     title: formData.get("title")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
     description_hu: formData.get("description_hu")?.toString() || null,
@@ -146,70 +148,71 @@ export async function saveGalleryItemAction(
     image_url: imageUrl,
   };
 
-  const { error } = id
-    ? await admin.from("gallery_items").update(payload).eq("id", id)
-    : await admin.from("gallery_items").insert(payload);
+  let updated: GalleryItem[];
+  if (id) {
+    updated = items.map((item) => (item.id === id ? { ...item, ...fields } : item));
+  } else {
+    const newItem: GalleryItem = {
+      id: randomUUID(),
+      created_at: new Date().toISOString(),
+      ...fields,
+    };
+    updated = [...items, newItem];
+  }
 
-  if (error) return { error: error.message };
+  try {
+    await writeContentFile(GALLERY_PATH, updated);
+  } catch (error) {
+    console.error("saveGalleryItemAction: write failed", error);
+    return { error: "Nem sikerült menteni a motorkerékpárt." };
+  }
 
   revalidatePublicPages();
-  return { success: true };
+  return { success: true, message: SAVED_MESSAGE };
 }
 
 export async function deleteGalleryItemAction(formData: FormData) {
   await requireSession();
-  const admin = getSupabaseAdmin();
-  if (!admin) return;
+  if (!isContentStoreWritable()) return;
 
   const id = formData.get("id")?.toString();
   if (!id) return;
 
-  await admin.from("gallery_items").delete().eq("id", id);
-  revalidatePublicPages();
-}
+  const items = await getGalleryItems();
+  const target = items.find((item) => item.id === id);
+  const remaining = items.filter((item) => item.id !== id);
 
-function extractMediaStoragePath(imageUrl: string): string | null {
-  const marker = "/storage/v1/object/public/media/";
-  const index = imageUrl.indexOf(marker);
-  if (index === -1) return null;
-  return imageUrl.slice(index + marker.length);
+  try {
+    await writeContentFile(GALLERY_PATH, remaining);
+    if (target) await deleteUploadedImage(target.image_url);
+  } catch (error) {
+    console.error("deleteGalleryItemAction: failed", error);
+    return;
+  }
+
+  revalidatePublicPages();
 }
 
 export async function resetGalleryAction(): Promise<MutationState> {
   await requireSession();
-  const admin = getSupabaseAdmin();
-  if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
+  if (!isContentStoreWritable()) {
+    return { error: NOT_WRITABLE_ERROR };
   }
 
-  const { data: items, error: selectError } = await admin.from("gallery_items").select("id, image_url");
-  if (selectError) {
-    console.error("resetGalleryAction: select failed", selectError);
-    return { error: `Nem sikerült lekérni a galéria elemeit: ${selectError.message}` };
-  }
+  const items = await getGalleryItems();
 
-  const storagePaths = (items ?? [])
-    .map((item) => extractMediaStoragePath(item.image_url))
-    .filter((storagePath): storagePath is string => Boolean(storagePath));
-
-  if (storagePaths.length > 0) {
-    const { error: removeError } = await admin.storage.from("media").remove(storagePaths);
-    if (removeError) {
-      console.error("resetGalleryAction: storage remove failed", removeError);
+  try {
+    await writeContentFile(GALLERY_PATH, []);
+    for (const item of items) {
+      await deleteUploadedImage(item.image_url);
     }
-  }
-
-  const ids = (items ?? []).map((item) => item.id);
-  if (ids.length > 0) {
-    const { error: deleteError } = await admin.from("gallery_items").delete().in("id", ids);
-    if (deleteError) {
-      console.error("resetGalleryAction: delete failed", deleteError);
-      return { error: `Nem sikerült törölni a galéria elemeit: ${deleteError.message}` };
-    }
+  } catch (error) {
+    console.error("resetGalleryAction: failed", error);
+    return { error: "Nem sikerült törölni a galéria elemeit." };
   }
 
   revalidatePublicPages();
-  return { success: true };
+  return { success: true, message: SAVED_MESSAGE };
 }
 
 export async function saveEventAction(
@@ -217,16 +220,17 @@ export async function saveEventAction(
   formData: FormData
 ): Promise<MutationState> {
   await requireSession();
-  const admin = getSupabaseAdmin();
-  if (!admin || !isSupabaseAdminConfigured()) {
-    return { error: "A Supabase még nincs csatlakoztatva, ezért ez a módosítás nem menthető. Lásd a README fájlt a beállításhoz." };
+  if (!isContentStoreWritable()) {
+    return { error: NOT_WRITABLE_ERROR };
   }
 
   const id = formData.get("id")?.toString();
   const currentImageUrl = formData.get("current_image_url")?.toString() ?? "";
   const imageUrl = await uploadImageIfProvided(formData, currentImageUrl);
 
-  const payload = {
+  const events = await getEvents();
+
+  const fields = {
     title: formData.get("title")?.toString() ?? "",
     title_hu: formData.get("title_hu")?.toString() || null,
     description: formData.get("description")?.toString() ?? "",
@@ -236,24 +240,47 @@ export async function saveEventAction(
     image_url: imageUrl,
   };
 
-  const { error } = id
-    ? await admin.from("events").update(payload).eq("id", id)
-    : await admin.from("events").insert(payload);
+  let updated: MuseumEvent[];
+  if (id) {
+    updated = events.map((event) => (event.id === id ? { ...event, ...fields } : event));
+  } else {
+    const newEvent: MuseumEvent = {
+      id: randomUUID(),
+      created_at: new Date().toISOString(),
+      ...fields,
+    };
+    updated = [...events, newEvent];
+  }
 
-  if (error) return { error: error.message };
+  try {
+    await writeContentFile(EVENTS_PATH, updated);
+  } catch (error) {
+    console.error("saveEventAction: write failed", error);
+    return { error: "Nem sikerült menteni az eseményt." };
+  }
 
   revalidatePublicPages();
-  return { success: true };
+  return { success: true, message: SAVED_MESSAGE };
 }
 
 export async function deleteEventAction(formData: FormData) {
   await requireSession();
-  const admin = getSupabaseAdmin();
-  if (!admin) return;
+  if (!isContentStoreWritable()) return;
 
   const id = formData.get("id")?.toString();
   if (!id) return;
 
-  await admin.from("events").delete().eq("id", id);
+  const events = await getEvents();
+  const target = events.find((event) => event.id === id);
+  const remaining = events.filter((event) => event.id !== id);
+
+  try {
+    await writeContentFile(EVENTS_PATH, remaining);
+    if (target) await deleteUploadedImage(target.image_url);
+  } catch (error) {
+    console.error("deleteEventAction: failed", error);
+    return;
+  }
+
   revalidatePublicPages();
 }

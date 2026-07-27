@@ -1,5 +1,5 @@
 import { getEvents, getGalleryItems, getSiteSettings } from "@/lib/data";
-import { isSupabaseAdminConfigured } from "@/lib/supabase-admin";
+import { isContentStoreWritable } from "@/lib/content-writer";
 import SiteSettingsForm from "@/components/admin/SiteSettingsForm";
 import GalleryManager from "@/components/admin/GalleryManager";
 import EventsManager from "@/components/admin/EventsManager";
@@ -17,7 +17,7 @@ export default async function AdminDashboardPage() {
     getGalleryItems(),
     getEvents(),
   ]);
-  const supabaseReady = isSupabaseAdminConfigured();
+  const writable = isContentStoreWritable();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10">
@@ -29,26 +29,27 @@ export default async function AdminDashboardPage() {
         <LogoutButton />
       </div>
 
-      {!supabaseReady && (
+      {!writable && (
         <div className="mt-6 border-2 border-rust bg-rust/10 p-4 text-sm text-rust-dark">
-          A Supabase még nincs csatlakoztatva. Az admin felület alant megtekinthető, de a mentés nem
-          működik, amíg a Supabase környezeti változók be nincsenek állítva (lásd README.md).
+          A mentés jelenleg nincs beállítva (hiányzik a GITHUB_TOKEN). Az admin felület alant
+          megtekinthető, de a módosítások nem menthetők, amíg a beállítás meg nem történik (lásd
+          README.md).
         </div>
       )}
 
       <section className="mt-10">
         <h2 className="font-display text-2xl text-espresso">Webhely beállításai</h2>
-        <SiteSettingsForm settings={settings} disabled={!supabaseReady} />
+        <SiteSettingsForm settings={settings} disabled={!writable} />
       </section>
 
       <section className="mt-14">
         <h2 className="font-display text-2xl text-espresso">Galéria</h2>
-        <GalleryManager items={galleryItems} disabled={!supabaseReady} />
+        <GalleryManager items={galleryItems} disabled={!writable} />
       </section>
 
       <section className="mt-14 pb-10">
         <h2 className="font-display text-2xl text-espresso">Események</h2>
-        <EventsManager events={events} disabled={!supabaseReady} />
+        <EventsManager events={events} disabled={!writable} />
       </section>
     </div>
   );
