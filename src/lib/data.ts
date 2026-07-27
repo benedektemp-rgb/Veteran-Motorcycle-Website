@@ -7,7 +7,11 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   if (!supabase) return siteSettingsSeed;
 
   const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
-  if (error || !data) return siteSettingsSeed;
+  if (error) {
+    console.error("getSiteSettings: Supabase query failed, falling back to seed data", error);
+    return siteSettingsSeed;
+  }
+  if (!data) return siteSettingsSeed;
   return data as unknown as SiteSettings;
 }
 
@@ -19,7 +23,10 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
     .from("gallery_items")
     .select("*")
     .order("sort_order", { ascending: true });
-  if (error) return galleryItemsSeed;
+  if (error) {
+    console.error("getGalleryItems: Supabase query failed, falling back to seed data", error);
+    return galleryItemsSeed;
+  }
   return (data ?? []) as unknown as GalleryItem[];
 }
 
@@ -28,7 +35,10 @@ export async function getGalleryItemById(id: string): Promise<GalleryItem | null
   if (!supabase) return galleryItemsSeed.find((item) => item.id === id) ?? null;
 
   const { data, error } = await supabase.from("gallery_items").select("*").eq("id", id).maybeSingle();
-  if (error) return null;
+  if (error) {
+    console.error("getGalleryItemById: Supabase query failed", { id, error });
+    return null;
+  }
   return (data as unknown as GalleryItem) ?? null;
 }
 
@@ -40,7 +50,10 @@ export async function getEvents(): Promise<MuseumEvent[]> {
     .from("events")
     .select("*")
     .order("event_date", { ascending: true });
-  if (error) return eventsSeed;
+  if (error) {
+    console.error("getEvents: Supabase query failed, falling back to seed data", error);
+    return eventsSeed;
+  }
   return (data ?? []) as unknown as MuseumEvent[];
 }
 
