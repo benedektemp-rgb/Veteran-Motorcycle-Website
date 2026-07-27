@@ -91,13 +91,21 @@ English/Hungarian fields in `/admin` -- if the Hungarian field is left blank, th
 showing the English text instead of a blank. Everything else (address, phone, email, motorcycle model
 names, event dates/locations) is shared across both languages.
 
+## Museum tours (QR codes)
+
+Every motorcycle has its own page at `/gallery/{id}` (Hungarian) / `/en/gallery/{id}` (English) --
+gallery cards link there, and each gallery item's row in `/admin` has a **QR kód** button that
+generates a scannable QR code pointing at that bike's Hungarian page, with a PNG download link for
+printing and posting next to the physical motorcycle in the museum. Generated entirely in the browser
+(the `qrcode` package), no external service involved.
+
 ## Project structure
 
-- `src/app/(hu)/` -- Hungarian pages (Home, Gallery, Events, About, Contact), served unprefixed at `/`;
-  `src/app/en/` -- their English mirrors, served under `/en`. Both are thin wrappers around the shared
-  implementations in `src/app/_pages/`.
-- `src/app/admin/` -- the admin dashboard (English-only) and `actions.ts`, the server actions for
-  login/logout and all content CRUD.
+- `src/app/(hu)/` -- Hungarian pages (Home, Gallery, Events, About, Contact, and `gallery/[id]` for a
+  single motorcycle), served unprefixed at `/`; `src/app/en/` -- their English mirrors, served under
+  `/en`. Both are thin wrappers around the shared implementations in `src/app/_pages/`.
+- `src/app/admin/` -- the admin dashboard (Hungarian-only, it's an internal tool) and `actions.ts`, the
+  server actions for login/logout and all content CRUD.
 - `src/lib/i18n/` -- `dictionaries.ts` (translated UI strings) and `locale.ts` (the `localize()` helper
   that picks the English or Hungarian value of a bilingual field, with English as the fallback).
 - `src/lib/data.ts` -- data-fetching layer; falls back to seed data when Supabase isn't configured.

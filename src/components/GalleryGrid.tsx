@@ -3,15 +3,18 @@
 import { useMemo, useState } from "react";
 import GalleryCard from "@/components/GalleryCard";
 import type { GalleryItem } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/locale";
 
 export default function GalleryGrid({
   items,
+  locale,
   allLabel,
   emptyLabel,
   searchPlaceholder,
   noResultsLabel,
 }: {
   items: GalleryItem[];
+  locale: Locale;
   allLabel: string;
   emptyLabel: string;
   searchPlaceholder: string;
@@ -59,7 +62,7 @@ export default function GalleryGrid({
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((item) => (
-          <GalleryCard key={item.id} item={item} />
+          <GalleryCard key={item.id} item={item} locale={locale} />
         ))}
       </div>
 

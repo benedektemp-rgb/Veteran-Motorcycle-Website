@@ -38,6 +38,9 @@ export type Dictionary = {
     searchPlaceholder: string;
     noResults: string;
   };
+  galleryItem: {
+    backToGallery: string;
+  };
   events: {
     title: string;
     eyebrow: string;
@@ -104,6 +107,9 @@ const en: Dictionary = {
     empty: "No motorcycles in this era yet.",
     searchPlaceholder: "Search by title or category...",
     noResults: "No motorcycles match your search.",
+  },
+  galleryItem: {
+    backToGallery: "Back to Gallery",
   },
   events: {
     title: "Events",
@@ -172,6 +178,9 @@ const hu: Dictionary = {
     empty: "Ebből a korszakból még nincs motorkerékpár.",
     searchPlaceholder: "Keresés cím vagy kategória alapján...",
     noResults: "Nincs a keresésnek megfelelő motorkerékpár.",
+  },
+  galleryItem: {
+    backToGallery: "Vissza a galériához",
   },
   events: {
     title: "Események",

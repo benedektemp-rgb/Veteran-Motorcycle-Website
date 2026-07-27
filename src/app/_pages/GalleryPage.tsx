@@ -19,6 +19,7 @@ export default async function GalleryPage({ locale }: { locale: Locale }) {
       <div className="mx-auto max-w-6xl px-5 py-14">
         <GalleryGrid
           items={localizedItems}
+          locale={locale}
           allLabel={dict.gallery.allFilter}
           emptyLabel={dict.gallery.empty}
           searchPlaceholder={dict.gallery.searchPlaceholder}

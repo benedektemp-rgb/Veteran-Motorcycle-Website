@@ -90,7 +90,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
           </div>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((item) => (
-              <GalleryCard key={item.id} item={item} />
+              <GalleryCard key={item.id} item={item} locale={locale} />
             ))}
           </div>
         </div>

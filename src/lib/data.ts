@@ -23,6 +23,15 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
   return (data ?? []) as unknown as GalleryItem[];
 }
 
+export async function getGalleryItemById(id: string): Promise<GalleryItem | null> {
+  const supabase = getSupabase();
+  if (!supabase) return galleryItemsSeed.find((item) => item.id === id) ?? null;
+
+  const { data, error } = await supabase.from("gallery_items").select("*").eq("id", id).maybeSingle();
+  if (error) return null;
+  return (data as unknown as GalleryItem) ?? null;
+}
+
 export async function getEvents(): Promise<MuseumEvent[]> {
   const supabase = getSupabase();
   if (!supabase) return eventsSeed;

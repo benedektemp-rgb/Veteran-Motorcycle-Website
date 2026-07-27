@@ -5,6 +5,7 @@ import Image from "next/image";
 import { deleteGalleryItemAction, resetGalleryAction, type MutationState } from "@/app/admin/actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 import GalleryItemForm from "@/components/admin/GalleryItemForm";
+import QrCodeButton from "@/components/admin/QrCodeButton";
 import type { GalleryItem } from "@/lib/types";
 
 const initialResetState: MutationState = {};
@@ -64,6 +65,7 @@ export default function GalleryManager({ items, disabled }: { items: GalleryItem
               >
                 Szerkesztés
               </button>
+              <QrCodeButton path={`/gallery/${item.id}`} label={item.title} />
               <DeleteButton
                 id={item.id}
                 action={deleteGalleryItemAction}
