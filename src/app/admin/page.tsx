@@ -36,6 +36,10 @@ export default async function AdminDashboardPage() {
           A mentés jelenleg nincs beállítva (hiányzik a GITHUB_TOKEN). Az admin felület alant
           megtekinthető, de a módosítások nem menthetők, amíg a beállítás meg nem történik (lásd
           README.md).
+          <br />
+          Diagnosztika: VERCEL={String(Boolean(process.env.VERCEL))}, GITHUB_TOKEN jelen=
+          {String(Boolean(process.env.GITHUB_TOKEN))}, hossz=
+          {process.env.GITHUB_TOKEN?.length ?? 0}
         </div>
       )}
 
