@@ -1,13 +1,13 @@
 [
   {
-    "id": "24bb9d59-d716-430a-8a62-bcf086065b0a",
-    "title": "Vintage Iron Swap Meet",
-    "title_hu": "Veterán Vas Cserebörze",
-    "description": "Our biggest event of the year — dozens of vendors, parts hunters, and a show-and-shine on the front lawn. Bring your own project bike for free display space.",
-    "description_hu": "Az év legnagyobb rendezvénye — tucatnyi árus, alkatrészvadász és egy csillogó motorshow a főbejárat előtti gyepen. Hozza el saját projektmotorját, és ingyen kiállíthatja.",
-    "event_date": "2026-08-16",
-    "location": "Museum Grounds, 128 Foundry Row",
-    "image_url": "https://picsum.photos/seed/swap-meet/900/600",
-    "created_at": "2024-02-01T00:00:00.000Z"
+    "id": "135d22ed-a092-4ca0-a9b2-8bce297d17c4",
+    "title": "Restoration Workshop: Carburetor Basics",
+    "title_hu": "Felújító Workshop: Porlasztó Alapok",
+    "description": "A hands-on Saturday workshop with our head mechanic covering teardown, cleaning, and tuning of classic carburetors. Limited to 15 seats.",
+    "description_hu": "Gyakorlati szombati workshop főszerelőnkkel a klasszikus porlasztók szétszereléséről, tisztításáról és beállításáról. Létszám: 15 fő.",
+    "event_date": "2026-10-11",
+    "location": "Museum Workshop Bay",
+    "image_url": "https://picsum.photos/seed/workshop-carb/900/600",
+    "created_at": "2024-02-05T00:00:00.000Z"
   }
 ]
