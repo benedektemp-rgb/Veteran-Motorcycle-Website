@@ -11,14 +11,14 @@
     "created_at": "2024-02-01T00:00:00.000Z"
   },
   {
-    "id": "135d22ed-a092-4ca0-a9b2-8bce297d17c4",
-    "title": "Restoration Workshop: Carburetor Basics",
-    "title_hu": "Felújító Workshop: Porlasztó Alapok",
-    "description": "A hands-on Saturday workshop with our head mechanic covering teardown, cleaning, and tuning of classic carburetors. Limited to 15 seats.",
-    "description_hu": "Gyakorlati szombati workshop főszerelőnkkel a klasszikus porlasztók szétszereléséről, tisztításáról és beállításáról. Létszám: 15 fő.",
-    "event_date": "2026-10-11",
-    "location": "Museum Workshop Bay",
-    "image_url": "https://picsum.photos/seed/workshop-carb/900/600",
-    "created_at": "2024-02-05T00:00:00.000Z"
+    "id": "8e2d97b9-86e5-43d6-974a-78ab9a1c7892",
+    "title": "After Dark: Neon & Two-Strokes Night",
+    "title_hu": "Sötétedés Után: Neon és Kétütemű Est",
+    "description": "An evening exhibition of our 1980s and 1990s two-stroke collection under UV and neon lighting, with a curator-led talk at 8pm.",
+    "description_hu": "Az 1980-as és 1990-es évekbeli kétütemű gyűjteményünk esti kiállítása UV- és neonfényben, 20 órakor kurátori tárlatvezetéssel.",
+    "event_date": "2026-09-05",
+    "location": "Main Exhibition Hall",
+    "image_url": "https://picsum.photos/seed/neon-night/900/600",
+    "created_at": "2024-02-03T00:00:00.000Z"
   }
 ]
