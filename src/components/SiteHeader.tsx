@@ -29,7 +29,7 @@ export default function SiteHeader({
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b-4 border-espresso bg-cream/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b-4 border-espresso bg-cream/95 backdrop-blur print:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
         <Link href={prefix || "/"} className="font-display text-2xl tracking-wide text-espresso sm:text-3xl">
           {settings.museum_name}

@@ -15,7 +15,7 @@ export default function SiteFooter({ locale, settings }: { locale: Locale; setti
   ].filter((link) => link.url);
 
   return (
-    <footer className="mt-auto border-t-4 border-espresso bg-espresso text-parchment">
+    <footer className="mt-auto border-t-4 border-espresso bg-espresso text-parchment print:hidden">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:grid-cols-3">
         <div>
           <p className="font-display text-2xl tracking-wide text-mustard">{settings.museum_name}</p>

@@ -4,6 +4,7 @@ import SiteSettingsForm from "@/components/admin/SiteSettingsForm";
 import GalleryManager from "@/components/admin/GalleryManager";
 import EventsManager from "@/components/admin/EventsManager";
 import LogoutButton from "@/components/admin/LogoutButton";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -45,7 +46,14 @@ export default async function AdminDashboardPage() {
       </section>
 
       <section className="mt-14">
-        <h2 className="font-display text-2xl text-espresso">Galéria</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-2xl text-espresso">Galéria</h2>
+          {galleryItems.length > 0 && (
+            <Link href="/admin/qr-codes" className="text-sm font-semibold text-espresso underline">
+              Összes QR-kód nyomtatása
+            </Link>
+          )}
+        </div>
         <GalleryManager items={galleryItems} disabled={!writable} />
       </section>
 
